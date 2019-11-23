@@ -12,8 +12,7 @@ module.exports.create = (req, res, next) => {
     name: req.body.name,
     email: req.body.email,
     password: req.body.password,
-    avatar: req.body.avatar,
-    bootcamp: req.body.bootcamp
+    avatar: req.body.avatar
   })
 
   user.save()
@@ -60,7 +59,32 @@ module.exports.login = (_, res) => {
 }
 
 module.exports.doLogin = (req, res, next) => {
-  res.send('TODO')
+  const email = req.body.email
+  const password = req.body.password
+
+  User.findOne({ email: email, validated: true })
+    .then(user => {
+      if (!user) {
+        req.session.genericError = 'Wrong credentials'
+        res.redirect('/login')
+      }
+      else {
+        user.checkPassword(password)
+          .then(match => {
+            if (!match) {
+              req.session.genericError = 'Wrong credentials'
+              res.redirect('/login')
+            } else {
+              req.session.user = user
+              res.redirect('/')
+            }
+
+          })
+          .catch(next)
+      }
+    })
+    .catch(next)
+
 }
 
 module.exports.logout = (req, res) => {
