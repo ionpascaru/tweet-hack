@@ -15,3 +15,5 @@ router.post('/login', authMiddleware.isNotAuthenticated, usersController.doLogin
 router.post('/tweets', authMiddleware.isAuthenticated, tweetsController.create)
 
 router.get('/', authMiddleware.isAuthenticated, tweetsController.index)
+
+router.post('/logout', authMiddleware.isAuthenticated, usersController.logout)

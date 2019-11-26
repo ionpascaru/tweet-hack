@@ -3,8 +3,16 @@
     <div>
       <a class="navbar-brand" href="/">
         <i class="fa fa-twitter"></i>
-        <strong>teeet</strong>hack
+        <strong>tweeet</strong>hack
       </a>
     </div>
   </div>
+
+{{#if currentUser}}
+  <form action="/logout" method="POST">
+  <button type="submit" class="btn btn-danger">
+    Logout
+  </button>
+  </form>
+{{/if}}
 </nav>
